@@ -103,13 +103,24 @@ func main() {
 		Options   *utils.Wrapper
 	}
 	parsedStruct.ClaimsSet = utils.WrapMap(parseLinesToMap(argStruct.ClaimSet))
-	parsedStruct.Options = utils.WrapMap(parseLinesToMap(argStruct.ClaimSet))
+	parsedStruct.Options = utils.WrapMap(parseLinesToMap(argStruct.Options))
 	var claims = &jwt.Claims{}
 	claims.Set = parsedStruct.ClaimsSet.Map
 	claims.ID = argStruct.ID
 	claims.Issuer = argStruct.Issuer
 	claims.Subject = argStruct.Subject
-	claims.Audiences = argStruct.Aud
+
+	{
+		// https://github.com/pascaldekloe/jwt/issues/12
+		// https://github.com/dgrijalva/jwt-go/issues/184
+		// https://tools.ietf.org/html/rfc7519#section-4.1
+		if len(argStruct.Aud) == 1 {
+			claims.Set["aud"] = argStruct.Aud[0]
+		}else {
+			claims.Audiences = argStruct.Aud
+		}
+	}
+
 	if len(argStruct.Expires) > 0 {
 		claims.Expires = jwt.NewNumericTime(WithTime(argStruct.Expires).Round(time.Second))
 	}
