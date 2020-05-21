@@ -17,12 +17,12 @@ type argStruct struct {
 	ClaimSet  []string `arg:"-C,separate" help:"add claims kv"`
 	Options   []string `arg:"-O,separate" help:"add extra options"`
 	Aud       []string `arg:"-a,separate" help:"add audiences"`
-	Expires   string   `arg:"env,--exp" help:"set expires at, e.g. +15<s|m|h|d|w|M>"`
-	NotBefore string   `arg:"env,--nbf" help:"set not before at, e.g. +15<s|m|h|d|w|M>"`
+	Expires   string   `arg:"env,--exp,-e" help:"set expires at, e.g. +15<s|m|h|d|w|M>"`
+	NotBefore string   `arg:"env,--nbf,-n" help:"set not before at, e.g. +15<s|m|h|d|w|M>"`
 	Issued    string   `arg:"env,--iat" help:"set issued at, e.g. -10<s|m|h|d|w|M>"`
 	Issuer    string   `arg:"env,--iss" help:"set issuer"`
-	Subject   string   `arg:"env,--sub" help:"set subject"`
-	ID        string   `arg:"env,--jti" help:"set jwt id"`
+	Subject   string   `arg:"env,--sub,-s" help:"set subject"`
+	ID        string   `arg:"env,--jti,-i" help:"set jwt id"`
 }
 
 func WithTime(timeStr string) time.Time {
